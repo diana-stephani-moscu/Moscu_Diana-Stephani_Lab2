@@ -1,9 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Moscu_Diana_Stephani_Lab2.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Am adaugat partea aceasta
+builder.Services.AddDbContext<LibraryContext>(options => 
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var app = builder.Build();
+
+//Am adaugat si partea aceasta
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider; 
+    DbInitializer.Initialize(services);
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
