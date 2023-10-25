@@ -22,7 +22,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Authors", b =>
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Author", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
@@ -106,6 +106,9 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                     b.Property<int>("CustomerID")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("OrderID");
 
                     b.HasIndex("BookID");
@@ -117,7 +120,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
                 {
-                    b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Authors", "Author")
+                    b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("AuthorID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -129,7 +132,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Order", b =>
                 {
                     b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Book", "Book")
-                        .WithMany("Order")
+                        .WithMany("Orders")
                         .HasForeignKey("BookID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -145,14 +148,14 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Authors", b =>
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Author", b =>
                 {
                     b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Customer", b =>

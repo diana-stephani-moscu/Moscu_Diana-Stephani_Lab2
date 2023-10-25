@@ -16,19 +16,19 @@ namespace Moscu_Diana_Stephani_Lab2.Data
                     return; // BD a fost creata anterior
                 }
 
-                Authors Author1 = new Authors
+                Author Author1 = new Author
                 {
                     FirstName = "Mihail",
                     LastName = "Sadoveanu"
                 };
 
-                Authors Author2 = new Authors
+                Author Author2 = new Author
                 {
                     FirstName = "George",
                     LastName = "Calinescu"
                 };
 
-                Authors Author3 = new Authors
+                Author Author3 = new Author
                 {
                     FirstName = "Mircea",
                     LastName = "Eliade"

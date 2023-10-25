@@ -10,11 +10,11 @@ namespace Moscu_Diana_Stephani_Lab2.Models
     {
         public int ID { get; set; }
         public string Title { get; set; }
-        public Authors Author { get; set; }
+        public Author? Author { get; set; } //cheie straina
         public decimal Price { get; set; }
         
-        public int AuthorID { get; set; }
-        public ICollection<Order> Order { get; set; }
+        public int? AuthorID { get; set; }
+        public ICollection<Order>? Orders { get; set; }
         
     }
 }
