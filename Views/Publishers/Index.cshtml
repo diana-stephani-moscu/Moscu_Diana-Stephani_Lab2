@@ -18,8 +18,8 @@
             <th>Books</th>
             <th></th>
         </tr>
-
     </thead>
+
     <tbody>
         @foreach (var item in Model.Publishers)
         {
@@ -59,56 +59,54 @@
     </tbody>
 </table>
 
-@if (Model.Books != null)
-{
-    <h3>Books Published by Selected Publisher</h3>
-    <table class="table">
-        <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Price</th>
-        </tr>
-
-        @foreach (var item in Model.Books)
-        {
-            string selectedRow = "";
-            if (item.ID == (int?)ViewData["BookID"])
+            @if (Model.Books != null)
             {
-                selectedRow = "success";
-            }
-            <tr class="@selectedRow">
-                <td>
-                    @Html.ActionLink("Select", "Index", new { bookID = item.ID })
-                </td>
-                <td>
-                    @item.Title
-                </td>
-                <td>
-                    @item.Author
-                </td>
-                <td>
-                    @item.Price
-                </td>
-            </tr>
-        }
-    </table>
+                <h3>Books Published by Selected Publisher</h3>
+                    <tr>
+                        <th></th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                    </tr>
 
-    @if (Model.Customers != null)
-    {
-        <h3>Customers who ordered the selected book</h3>
-        <table class="table">
-            <tr>
-                <th>Customer ID</th>
-                <th>Customer Name</th>
-            </tr>
-            @foreach (var customer in Model.Customers)
-            {
-                <tr>
-                    <td>@customer.ID</td>
-                    <td>@customer.Name</td>
-                </tr>
+                    @foreach (var item in Model.Books)
+                    {
+                        string selectedRow = "";
+                        if (item.ID == (int?)ViewData["BookID"])
+                        {
+                            selectedRow = "success";
+                        }
+                        <tr class="@selectedRow">
+                            <td>
+                                @Html.ActionLink("Select", "Index", new { bookID = item.ID })
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @item.Author
+                            </td>
+                            <td>
+                                @item.Price
+                            </td>
+                        </tr>
+                    }
+
+                @if (Model.Customers != null)
+                {
+                    <h3>Customers who ordered the selected book</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Customer ID</th>
+                            <th>Customer Name</th>
+                        </tr>
+                        @foreach (var customer in Model.Customers)
+                        {
+                            <tr>
+                                <td>@customer.ID</td> <!-- am schimbat in customer model - CustomerID in doar ID -->
+                                <td>@customer.Name</td>
+                            </tr>
+                        }
+                    </table>
+                }
             }
-        </table>
-    }
-}

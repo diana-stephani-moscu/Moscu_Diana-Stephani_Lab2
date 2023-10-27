@@ -9,11 +9,12 @@ namespace Moscu_Diana_Stephani_Lab2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly LibraryContext _context; //adaugat in Lab4, eroare, step 5
         public HomeController(LibraryContext context)
         {
             _context = context;
         }
+
+        private readonly LibraryContext _context; //adaugat in Lab4, eroare, step 5
         
         public async Task<ActionResult> Statistics() //Adaugat in Lab4
         {
@@ -29,10 +30,10 @@ namespace Moscu_Diana_Stephani_Lab2.Controllers
 
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+       /* public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-        }
+        }  */
 
         public IActionResult Index()
         {

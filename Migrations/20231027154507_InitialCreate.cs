@@ -12,7 +12,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Authors",
+                name: "Author",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -22,14 +22,14 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Authors", x => x.ID);
+                    table.PrimaryKey("PK_Author", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Customer",
                 columns: table => new
                 {
-                    CustomerID = table.Column<int>(type: "int", nullable: false)
+                    ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -37,7 +37,21 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customer", x => x.CustomerID);
+                    table.PrimaryKey("PK_Customer", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Publisher",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PublisherName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publisher", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,18 +61,17 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AuthorID = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(6,2)", nullable: false),
+                    AuthorID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Book", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Book_Authors_AuthorID",
+                        name: "FK_Book_Author_AuthorID",
                         column: x => x.AuthorID,
-                        principalTable: "Authors",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Author",
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -84,7 +97,31 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                         name: "FK_Order_Customer_CustomerID",
                         column: x => x.CustomerID,
                         principalTable: "Customer",
-                        principalColumn: "CustomerID",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PublishedBook",
+                columns: table => new
+                {
+                    PublisherID = table.Column<int>(type: "int", nullable: false),
+                    BookID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PublishedBook", x => new { x.BookID, x.PublisherID });
+                    table.ForeignKey(
+                        name: "FK_PublishedBook_Book_BookID",
+                        column: x => x.BookID,
+                        principalTable: "Book",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PublishedBook_Publisher_PublisherID",
+                        column: x => x.PublisherID,
+                        principalTable: "Publisher",
+                        principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -102,6 +139,11 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                 name: "IX_Order_CustomerID",
                 table: "Order",
                 column: "CustomerID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PublishedBook_PublisherID",
+                table: "PublishedBook",
+                column: "PublisherID");
         }
 
         /// <inheritdoc />
@@ -111,13 +153,19 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "PublishedBook");
 
             migrationBuilder.DropTable(
                 name: "Customer");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Book");
+
+            migrationBuilder.DropTable(
+                name: "Publisher");
+
+            migrationBuilder.DropTable(
+                name: "Author");
         }
     }
 }

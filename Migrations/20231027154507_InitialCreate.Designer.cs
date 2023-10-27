@@ -12,7 +12,7 @@ using Moscu_Diana_Stephani_Lab2.Data;
 namespace Moscu_Diana_Stephani_Lab2.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20231025160830_InitialCreate")]
+    [Migration("20231027154507_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Authors", (string)null);
+                    b.ToTable("Author", (string)null);
                 });
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
@@ -54,11 +54,11 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("AuthorID")
+                    b.Property<int?>("AuthorID")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(6, 2)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -73,11 +73,11 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Adress")
                         .IsRequired()
@@ -90,7 +90,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerID");
+                    b.HasKey("ID");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -121,13 +121,49 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                     b.ToTable("Order", (string)null);
                 });
 
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.PublishedBook", b =>
+                {
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublisherID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookID", "PublisherID");
+
+                    b.HasIndex("PublisherID");
+
+                    b.ToTable("PublishedBook", (string)null);
+                });
+
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Publisher", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
+
+                    b.Property<string>("PublisherName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Publisher", (string)null);
+                });
+
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
                 {
                     b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("AuthorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorID");
 
                     b.Navigation("Author");
                 });
@@ -151,6 +187,25 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.PublishedBook", b =>
+                {
+                    b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Book", "Book")
+                        .WithMany("PublishedBooks")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Moscu_Diana_Stephani_Lab2.Models.Publisher", "Publisher")
+                        .WithMany("PublishedBooks")
+                        .HasForeignKey("PublisherID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Publisher");
+                });
+
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -159,11 +214,18 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Book", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("PublishedBooks");
                 });
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Publisher", b =>
+                {
+                    b.Navigation("PublishedBooks");
                 });
 #pragma warning restore 612, 618
         }

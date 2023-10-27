@@ -9,6 +9,4 @@ namespace Moscu_Diana_Stephani_Lab2.Models.LibraryViewModels
         public DateTime? OrderDate { get; set; }
         public int BookCount { get; set; }
     }
-
-
 }

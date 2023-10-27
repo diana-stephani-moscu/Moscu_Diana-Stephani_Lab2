@@ -70,11 +70,11 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
 
             modelBuilder.Entity("Moscu_Diana_Stephani_Lab2.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Adress")
                         .IsRequired()
@@ -87,7 +87,7 @@ namespace Moscu_Diana_Stephani_Lab2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CustomerID");
+                    b.HasKey("ID");
 
                     b.ToTable("Customer", (string)null);
                 });
